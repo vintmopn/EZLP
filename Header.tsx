@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function Header(){return <header className="header"><div className="wrap headerin"><Link className="logo" href="/">EZLP</Link><nav className="nav"><Link href="/vinyl">LP / 바이닐</Link><Link href="/fashion">패션</Link><Link href="/vinyl">신상품</Link><Link href="/vinyl">희귀 상품</Link><Link href="/request">상품 찾아주세요</Link></nav><div className="spacer"/><Link href="/admin">관리자</Link></div></header>}
