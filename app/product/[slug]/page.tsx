@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getSupabase } from '@/lib/supabase';
 import { findMusicColor } from '@/lib/music-colors';
+import ProductActions from '@/components/ProductActions';
 
 export const dynamic = 'force-dynamic';
 
@@ -110,9 +111,10 @@ export default async function ProductPage({
                 : '재고 및 배송 가능 여부 확인'}
             </p>
 
-            <button className="accent-button">장바구니 담기</button>
-            <button className="outline-buy-button">바로 구매</button>
-            <button className="wishlist-button">♡ 찜하기</button>
+            <ProductActions
+              productId={product.id}
+              price={Number(product.retail_price)}
+            />
           </div>
         </div>
       </div>
