@@ -117,7 +117,8 @@ export default async function CartPage() {
             </strong>
           </div>
 
-          <button
+          <Link
+            href="/checkout"
             style={{
               width: "100%",
               height: 60,
@@ -126,10 +127,13 @@ export default async function CartPage() {
               color: "#fff",
               fontWeight: 900,
               marginTop: 25,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
             주문하기
-          </button>
+          </Link>
         </>
       )}
     </main>

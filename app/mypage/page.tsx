@@ -42,29 +42,29 @@ export default async function MyPage() {
       </section>
 
       <div className="mypage-menu">
-        <div>
+        <Link href="/mypage/orders">
           <span>ORDERS</span>
           <strong>{orders?.length || 0}</strong>
           <p>주문 내역과 배송 상태</p>
-        </div>
+        </Link>
 
-        <div>
+        <Link href="/wishlist">
           <span>WISHLIST</span>
           <strong>♡</strong>
           <p>찜한 상품</p>
-        </div>
+        </Link>
 
-        <div>
+        <Link href="/mypage/requests">
           <span>REQUESTS</span>
           <strong>{requests?.length || 0}</strong>
-          <p>명반 구해주기 진행 현황</p>
-        </div>
+          <p>음반 구해주세요 진행 현황</p>
+        </Link>
 
-        <div>
+        <Link href="/mypage/addresses">
           <span>ADDRESS</span>
           <strong>→</strong>
           <p>배송지 관리</p>
-        </div>
+        </Link>
       </div>
 
       <section className="my-section">
