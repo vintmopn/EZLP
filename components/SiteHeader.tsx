@@ -20,7 +20,9 @@ export default async function SiteHeader() {
         <Link href="/fashion">FASHION</Link>
         <Link href="/rare">RARE</Link>
         <Link href="/new">NEW</Link>
-        <Link href="/request" className="request-link">명반 구해주기</Link>
+        <Link href="/request" className="request-link">
+          음반 구해주세요
+        </Link>
       </nav>
 
       <div className="header-actions">
@@ -29,8 +31,14 @@ export default async function SiteHeader() {
         ) : (
           <Link href="/login">로그인</Link>
         )}
-        <span className="header-icon">♡</span>
-        <span className="header-icon">BAG</span>
+
+        <Link href="/wishlist" aria-label="찜한 상품">
+          ♡
+        </Link>
+
+        <Link href="/cart">
+          장바구니
+        </Link>
       </div>
     </header>
   );
