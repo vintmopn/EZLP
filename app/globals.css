@@ -1206,3 +1206,120 @@ textarea {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* ==================================
+   EZLP CART / WISHLIST COMPACT FIX
+================================== */
+
+.utility-page {
+  width: min(1120px, calc(100% - 64px)) !important;
+  max-width: 1120px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 65px 0 110px !important;
+  overflow: hidden;
+}
+
+.utility-page > h1 {
+  font-size: clamp(42px, 5vw, 68px) !important;
+  line-height: 1 !important;
+  margin: 12px 0 45px !important;
+  word-break: keep-all;
+}
+
+.utility-page > div,
+.utility-page > section {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Cart rows */
+.utility-page a {
+  min-width: 0;
+}
+
+.utility-page h3,
+.utility-page p,
+.utility-page strong,
+.utility-page span {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: keep-all;
+}
+
+.utility-page h3 {
+  line-height: 1.35;
+}
+
+/* Wishlist product grid */
+.utility-page .product-grid {
+  width: 100% !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 38px 18px !important;
+}
+
+.utility-page .product-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.utility-page .product-card-info {
+  min-width: 0;
+  gap: 15px;
+}
+
+.utility-page .product-card-info > div {
+  min-width: 0;
+}
+
+.utility-page .product-card-info h3 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.utility-page .product-card-info p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.utility-page .product-card-info strong {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Empty cart/wishlist */
+.utility-empty {
+  width: 100%;
+  min-height: 300px !important;
+  padding: 55px 0 !important;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .utility-page {
+    width: calc(100% - 40px) !important;
+  }
+
+  .utility-page .product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .utility-page {
+    width: calc(100% - 28px) !important;
+    padding: 40px 0 80px !important;
+  }
+
+  .utility-page > h1 {
+    font-size: 42px !important;
+    margin-bottom: 32px !important;
+  }
+
+  .utility-page .product-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
