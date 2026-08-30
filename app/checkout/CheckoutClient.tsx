@@ -26,7 +26,7 @@ type Address = {
   is_default: boolean;
 };
 
-const PAYMENT_METHODS = [
+const paymentMethods = [
   ["CARD", "신용/체크카드"],
   ["KAKAOPAY", "카카오페이"],
   ["NAVERPAY", "네이버페이"],
@@ -42,49 +42,34 @@ export default function CheckoutClient({
   rows: CartRow[];
   addresses: Address[];
 }) {
-  const defaultAddress =
+  const firstAddress =
     addresses.find((a) => a.is_default)?.id ||
     addresses[0]?.id ||
     "";
 
-  const [addressId, setAddressId] = useState(defaultAddress);
+  const [addressId, setAddressId] = useState(firstAddress);
   const [paymentMethod, setPaymentMethod] = useState("CARD");
 
-  const subtotal = useMemo(
-    () =>
-      rows.reduce(
-        (sum, row) =>
-          sum +
-          Number(row.price_snapshot || 0) *
-            Number(row.quantity || 1),
-        0
-      ),
-    [rows]
-  );
+  const subtotal = useMemo(() => {
+    return rows.reduce(
+      (sum, row) =>
+        sum +
+        Number(row.price_snapshot) *
+          Number(row.quantity),
+      0
+    );
+  }, [rows]);
 
   const shippingFee = subtotal >= 100000 ? 0 : 3000;
   const total = subtotal + shippingFee;
 
   const selectedAddress = addresses.find(
-    (a) => a.id === addressId
+    (address) => address.id === addressId
   );
-
-  function nextPayment() {
-    if (!selectedAddress) {
-      alert("배송지를 먼저 선택해주세요.");
-      return;
-    }
-
-    alert(
-      `다음 단계에서 ${PAYMENT_METHODS.find(
-        ([id]) => id === paymentMethod
-      )?.[1]} 테스트 결제와 연결합니다.`
-    );
-  }
 
   return (
     <div className="checkout-grid">
-      <section className="checkout-left">
+      <section>
         <div className="checkout-block">
           <div className="checkout-title-row">
             <h2>주문 상품</h2>
@@ -117,6 +102,7 @@ export default function CheckoutClient({
         <div className="checkout-block">
           <div className="checkout-title-row">
             <h2>배송지</h2>
+
             <Link href="/mypage/addresses">
               + 새 배송지 입력
             </Link>
@@ -147,7 +133,6 @@ export default function CheckoutClient({
                   <input
                     type="radio"
                     name="address"
-                    value={address.id}
                     checked={addressId === address.id}
                     onChange={() =>
                       setAddressId(address.id)
@@ -192,7 +177,7 @@ export default function CheckoutClient({
           <h2>결제수단</h2>
 
           <div className="payment-method-grid">
-            {PAYMENT_METHODS.map(([id, label]) => (
+            {paymentMethods.map(([id, label]) => (
               <button
                 type="button"
                 key={id}
@@ -205,11 +190,6 @@ export default function CheckoutClient({
               </button>
             ))}
           </div>
-
-          <p className="payment-note">
-            현재는 토스페이먼츠 테스트 결제 연동 전 단계입니다.
-            다음 단계에서 실제 테스트 결제창과 연결합니다.
-          </p>
         </div>
       </section>
 
@@ -243,15 +223,17 @@ export default function CheckoutClient({
         <button
           type="button"
           className="checkout-pay-button"
-          onClick={nextPayment}
           disabled={!selectedAddress}
+          onClick={() =>
+            alert("다음 단계에서 토스페이먼츠 테스트 결제를 연결합니다.")
+          }
         >
           ₩{total.toLocaleString()} 결제하기
         </button>
 
         {!selectedAddress && (
           <p className="checkout-warning">
-            결제하려면 배송지를 먼저 등록해주세요.
+            배송지를 먼저 등록해주세요.
           </p>
         )}
       </aside>

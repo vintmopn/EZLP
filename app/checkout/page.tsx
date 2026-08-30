@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 
 export default async function CheckoutPage() {
   const supabase = await getServerSupabase();
+
   const { data: auth } = await supabase.auth.getUser();
 
   if (!auth.user) redirect("/login");
@@ -55,16 +56,7 @@ export default async function CheckoutPage() {
 
   const { data: addresses } = await supabase
     .from("addresses")
-    .select(`
-      id,
-      recipient_name,
-      phone,
-      postal_code,
-      address_line1,
-      address_line2,
-      delivery_note,
-      is_default
-    `)
+    .select("*")
     .eq("user_id", auth.user.id)
     .order("is_default", { ascending: false })
     .order("created_at", { ascending: false });
