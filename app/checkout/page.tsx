@@ -1,54 +1,88 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getServerSupabase } from "@/lib/supabase-server";
+import CheckoutClient from "./CheckoutClient";
 
 export const dynamic = "force-dynamic";
 
 export default async function CheckoutPage() {
   const supabase = await getServerSupabase();
-  const { data } = await supabase.auth.getUser();
+  const { data: auth } = await supabase.auth.getUser();
 
-  if (!data.user) redirect("/login");
+  if (!auth.user) redirect("/login");
+
+  const { data: carts } = await supabase
+    .from("carts")
+    .select("id")
+    .eq("user_id", auth.user.id)
+    .eq("status", "ACTIVE")
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  const cart = carts?.[0];
+
+  if (!cart) redirect("/cart");
+
+  const { data: items } = await supabase
+    .from("cart_items")
+    .select("id,product_id,quantity,price_snapshot")
+    .eq("cart_id", cart.id);
+
+  const ids = (items || []).map(
+    (item: any) => item.product_id
+  );
+
+  let products: any[] = [];
+
+  if (ids.length) {
+    const { data } = await supabase
+      .from("products")
+      .select("id,slug,title,subtitle")
+      .in("id", ids);
+
+    products = data || [];
+  }
+
+  const rows = (items || []).map((item: any) => ({
+    ...item,
+    product:
+      products.find(
+        (p: any) => p.id === item.product_id
+      ) || null,
+  }));
+
+  if (!rows.length) redirect("/cart");
+
+  const { data: addresses } = await supabase
+    .from("addresses")
+    .select(`
+      id,
+      recipient_name,
+      phone,
+      postal_code,
+      address_line1,
+      address_line2,
+      delivery_note,
+      is_default
+    `)
+    .eq("user_id", auth.user.id)
+    .order("is_default", { ascending: false })
+    .order("created_at", { ascending: false });
 
   return (
-    <main
-      style={{
-        width: "min(1180px, calc(100% - 48px))",
-        margin: "0 auto",
-        padding: "80px 0 120px",
-      }}
-    >
-      <Link href="/cart" style={{ fontSize: 12 }}>
+    <main className="checkout-page">
+      <Link href="/cart" className="back-link">
         ← 장바구니
       </Link>
 
-      <p className="eyebrow" style={{ marginTop: 50 }}>
-        EZLP CHECKOUT
-      </p>
+      <p className="eyebrow">EZLP CHECKOUT</p>
 
-      <h1
-        style={{
-          fontSize: "clamp(55px,8vw,100px)",
-          letterSpacing: "-.07em",
-          margin: "10px 0 50px",
-        }}
-      >
-        주문서
-      </h1>
+      <h1>주문서</h1>
 
-      <div
-        style={{
-          borderTop: "1px solid #111",
-          padding: "60px 0",
-        }}
-      >
-        <h2>결제 준비 중</h2>
-
-        <p style={{ color: "#777", lineHeight: 1.7 }}>
-          다음 단계에서 주문 상품, 배송지 선택, 주소 검색,
-          결제수단과 최종 결제금액을 이 화면에 연결합니다.
-        </p>
-      </div>
+      <CheckoutClient
+        rows={rows}
+        addresses={addresses || []}
+      />
     </main>
   );
 }
