@@ -18,6 +18,18 @@ const PEOPLE = [
   { src: "/people/12.png", speech: "결국 찾았네." },
 ];
 
+
+function shuffleIndexes(length: number) {
+  const result = Array.from({ length }, (_, i) => i);
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
+}
+
 const COLORS = [
   { name: "CLEAR", ko: "클리어 / 투명", bg: "#f4f5f5", fg: "#111" },
   { name: "GOLD", ko: "골드 / 금색", bg: "#dcb52d", fg: "#111" },
@@ -40,17 +52,32 @@ const CATEGORIES = [
 
 export default function MobileHome() {
   const [index, setIndex] = useState(0);
+  const [randomOrder, setRandomOrder] = useState<number[]>(
+    PEOPLE.map((_, i) => i)
+  );
 
   useEffect(() => {
+    setRandomOrder(shuffleIndexes(PEOPLE.length));
+
     const timer = window.setInterval(() => {
-      setIndex((v) => (v + 1) % PEOPLE.length);
+      setIndex((current) => {
+        const next = current + 1;
+
+        if (next >= PEOPLE.length) {
+          setRandomOrder(shuffleIndexes(PEOPLE.length));
+          return 0;
+        }
+
+        return next;
+      });
     }, 4500);
 
     return () => window.clearInterval(timer);
   }, []);
 
-  const hero = PEOPLE[index];
-  const colorPerson = PEOPLE[(index + 3) % PEOPLE.length];
+  const hero = PEOPLE[randomOrder[index] ?? index];
+  const colorPerson =
+    PEOPLE[randomOrder[(index + 3) % PEOPLE.length] ?? ((index + 3) % PEOPLE.length)];
 
   return (
     <>

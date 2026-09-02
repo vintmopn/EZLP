@@ -30,6 +30,18 @@ const PEOPLE: Person[] = [
   { src: "/people/12.png", speech: "결국 찾았네." },
 ];
 
+
+function shuffleIndexes(length: number) {
+  const result = Array.from({ length }, (_, i) => i);
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
+}
+
 /*
   스크롤 위치별 PC 빈 공간.
   사람은 한 명만 나오고, 위치만 섹션에 맞춰 변경.
@@ -80,12 +92,26 @@ const LAYOUTS: Layout[] = [
 
 export default function FunnyPeople() {
   const [personIndex, setPersonIndex] = useState(0);
+  const [randomOrder, setRandomOrder] = useState<number[]>(
+    PEOPLE.map((_, i) => i)
+  );
   const [sectionIndex, setSectionIndex] = useState(0);
 
-  // 5초마다 12명 순서대로 교체
+  // PC: 12명을 랜덤 순서로 한 번씩 보여준 뒤 다시 섞음
   useEffect(() => {
+    setRandomOrder(shuffleIndexes(PEOPLE.length));
+
     const timer = window.setInterval(() => {
-      setPersonIndex((current) => (current + 1) % PEOPLE.length);
+      setPersonIndex((current) => {
+        const next = current + 1;
+
+        if (next >= PEOPLE.length) {
+          setRandomOrder(shuffleIndexes(PEOPLE.length));
+          return 0;
+        }
+
+        return next;
+      });
     }, 5000);
 
     return () => window.clearInterval(timer);
@@ -126,7 +152,7 @@ export default function FunnyPeople() {
     };
   }, []);
 
-  const person = PEOPLE[personIndex];
+  const person = PEOPLE[randomOrder[personIndex] ?? personIndex];
   const layout = LAYOUTS[sectionIndex];
   const bubbleRight = layout.bubbleSide === "right";
 
