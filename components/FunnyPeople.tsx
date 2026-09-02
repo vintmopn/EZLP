@@ -12,7 +12,7 @@ type Layout = {
   top: string;
   size: number;
   rotate: number;
-  bubbleSide: "left" | "right";
+  bubbleSide?: "left" | "right";
 };
 
 const PEOPLE: Person[] = [
@@ -36,11 +36,10 @@ const PEOPLE: Person[] = [
 */
 const LAYOUTS: Layout[] = [
   {
-    left: "69%",
-    top: "34%",
-    size: 430,
+    left: "40%",
+    top: "49%",
+    size: 330,
     rotate: -2,
-    bubbleSide: "left",
   },
   {
     left: "42%",
@@ -149,24 +148,26 @@ export default function FunnyPeople() {
         <div className="ezlp-pc-character-inner">
           <img src={person.src} alt="" />
 
-          <div
-            className="ezlp-pc-bubble"
-            style={
-              bubbleRight
-                ? { left: "calc(100% + 26px)" }
-                : { right: "calc(100% + 26px)" }
-            }
-          >
-            {person.speech}
-
-            <span
-              className={
+          {layout.bubbleSide && (
+            <div
+              className="ezlp-pc-bubble"
+              style={
                 bubbleRight
-                  ? "ezlp-tail-right"
-                  : "ezlp-tail-left"
+                  ? { left: "calc(100% + 26px)" }
+                  : { right: "calc(100% + 26px)" }
               }
-            />
-          </div>
+            >
+              {person.speech}
+
+              <span
+                className={
+                  bubbleRight
+                    ? "ezlp-tail-right"
+                    : "ezlp-tail-left"
+                }
+              />
+            </div>
+          )}
         </div>
       </div>
 
