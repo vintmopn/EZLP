@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { MUSIC_COLORS } from '@/lib/music-colors';
 import FunnyPeople from "@/components/FunnyPeople";
+import MobileHome from "@/components/MobileHome";
 export const dynamic = 'force-dynamic';
 
 export default function HomePage() {
@@ -18,6 +19,7 @@ export default function HomePage() {
 
   return (
     <main style={{ position: "relative" }}>
+      <MobileHome />
       <div style={{ position: "relative", overflow: "hidden" }}>
         <FunnyPeople />
 {/* 첫 화면 */}
