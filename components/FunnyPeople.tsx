@@ -7,12 +7,12 @@ type Person = {
   speech: string;
 };
 
-type Slot = {
+type Layout = {
   left: string;
   top: string;
   size: number;
   rotate: number;
-  bubble?: "left" | "right";
+  bubbleSide: "left" | "right";
 };
 
 const PEOPLE: Person[] = [
@@ -31,81 +31,75 @@ const PEOPLE: Person[] = [
 ];
 
 /*
-  PC 스크롤 구간별 '빈 공간' 위치.
-  사진은 시간마다 바뀌고 위치는 섹션에 맞게 유지.
+  스크롤 위치별 PC 빈 공간.
+  사람은 한 명만 나오고, 위치만 섹션에 맞춰 변경.
 */
-const LAYOUTS: Slot[][] = [
-  [
-    { left: "45%", top: "24%", size: 390, rotate: -3, bubble: "right" },
-    { left: "90%", top: "77%", size: 345, rotate: 3 },
-  ],
-  [
-    { left: "40%", top: "22%", size: 380, rotate: -3, bubble: "right" },
-    { left: "36%", top: "79%", size: 355, rotate: 3 },
-  ],
-  [
-    { left: "14%", top: "25%", size: 355, rotate: -3, bubble: "right" },
-    { left: "90%", top: "76%", size: 345, rotate: 3 },
-  ],
-  [
-    { left: "18%", top: "76%", size: 385, rotate: -3 },
-    { left: "88%", top: "23%", size: 360, rotate: 3, bubble: "left" },
-  ],
-  [
-    { left: "14%", top: "23%", size: 360, rotate: -3, bubble: "right" },
-    { left: "90%", top: "78%", size: 370, rotate: 3 },
-  ],
-  [
-    { left: "17%", top: "77%", size: 360, rotate: -3 },
-    { left: "87%", top: "24%", size: 370, rotate: 3, bubble: "left" },
-  ],
+const LAYOUTS: Layout[] = [
+  {
+    left: "69%",
+    top: "34%",
+    size: 430,
+    rotate: -2,
+    bubbleSide: "left",
+  },
+  {
+    left: "42%",
+    top: "31%",
+    size: 420,
+    rotate: 2,
+    bubbleSide: "right",
+  },
+  {
+    left: "83%",
+    top: "66%",
+    size: 420,
+    rotate: -2,
+    bubbleSide: "left",
+  },
+  {
+    left: "23%",
+    top: "67%",
+    size: 440,
+    rotate: 2,
+    bubbleSide: "right",
+  },
+  {
+    left: "80%",
+    top: "31%",
+    size: 425,
+    rotate: -2,
+    bubbleSide: "left",
+  },
+  {
+    left: "25%",
+    top: "68%",
+    size: 425,
+    rotate: 2,
+    bubbleSide: "right",
+  },
 ];
 
-function Bubble({
-  text,
-  side,
-}: {
-  text: string;
-  side: "left" | "right";
-}) {
-  const toRight = side === "right";
-
-  return (
-    <div
-      className="pc-person-bubble"
-      style={
-        toRight
-          ? { left: "calc(100% + 18px)" }
-          : { right: "calc(100% + 18px)" }
-      }
-    >
-      {text}
-      <span className={toRight ? "tail-right" : "tail-left"} />
-    </div>
-  );
-}
-
 export default function FunnyPeople() {
-  const [pairIndex, setPairIndex] = useState(0);
-  const [scrollStage, setScrollStage] = useState(0);
+  const [personIndex, setPersonIndex] = useState(0);
+  const [sectionIndex, setSectionIndex] = useState(0);
 
-  /* 5초마다 다음 두 명 */
+  // 5초마다 12명 순서대로 교체
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setPairIndex((current) => (current + 1) % 6);
+      setPersonIndex((current) => (current + 1) % PEOPLE.length);
     }, 5000);
 
     return () => window.clearInterval(timer);
   }, []);
 
-  /* 스크롤 위치에 따라 사람 배치 위치만 변경 */
+  // 스크롤 위치에 따라 빈 공간 위치 변경
   useEffect(() => {
-    const updateStage = () => {
+    const update = () => {
       const maxScroll =
         document.documentElement.scrollHeight - window.innerHeight;
 
       if (maxScroll <= 0) {
-        setScrollStage(0);
+        setSectionIndex(0);
         return;
       }
 
@@ -114,7 +108,7 @@ export default function FunnyPeople() {
         Math.max(0, window.scrollY / maxScroll)
       );
 
-      setScrollStage(
+      setSectionIndex(
         Math.min(
           LAYOUTS.length - 1,
           Math.floor(progress * LAYOUTS.length)
@@ -122,194 +116,155 @@ export default function FunnyPeople() {
       );
     };
 
-    updateStage();
+    update();
 
-    window.addEventListener("scroll", updateStage, { passive: true });
-    window.addEventListener("resize", updateStage);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
 
     return () => {
-      window.removeEventListener("scroll", updateStage);
-      window.removeEventListener("resize", updateStage);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
     };
   }, []);
 
-  const firstPerson = PEOPLE[pairIndex * 2];
-  const secondPerson = PEOPLE[pairIndex * 2 + 1];
-  const slots = LAYOUTS[scrollStage];
+  const person = PEOPLE[personIndex];
+  const layout = LAYOUTS[sectionIndex];
+  const bubbleRight = layout.bubbleSide === "right";
 
   return (
     <div
-      className="ezlp-desktop-people"
-      key={`${pairIndex}-${scrollStage}`}
+      className="ezlp-pc-character-layer"
       aria-hidden="true"
     >
-      {[firstPerson, secondPerson].map((person, i) => {
-        const slot = slots[i];
+      <div
+        key={`${personIndex}-${sectionIndex}`}
+        className="ezlp-pc-character"
+        style={{
+          left: layout.left,
+          top: layout.top,
+          width: layout.size,
+          transform: `translate(-50%, -50%) rotate(${layout.rotate}deg)`,
+        }}
+      >
+        <div className="ezlp-pc-character-inner">
+          <img src={person.src} alt="" />
 
-        return (
           <div
-            key={person.src}
-            className="pc-floating-person"
-            style={{
-              left: slot.left,
-              top: slot.top,
-              width: slot.size,
-              transform: `translate(-50%, -50%) rotate(${slot.rotate}deg)`,
-            }}
+            className="ezlp-pc-bubble"
+            style={
+              bubbleRight
+                ? { left: "calc(100% + 26px)" }
+                : { right: "calc(100% + 26px)" }
+            }
           >
-            <div className="pc-person-inner">
-              <img src={person.src} alt="" />
+            {person.speech}
 
-              {slot.bubble && (
-                <Bubble
-                  text={person.speech}
-                  side={slot.bubble}
-                />
-              )}
-            </div>
-          </div>
-        );
-      })}
-
-      <div className="pc-rotation-indicator">
-        <b>{pairIndex + 1}</b>
-        <span>/ 6</span>
-
-        <div>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <i
-              key={i}
-              className={i === pairIndex ? "active" : ""}
+            <span
+              className={
+                bubbleRight
+                  ? "ezlp-tail-right"
+                  : "ezlp-tail-left"
+              }
             />
-          ))}
+          </div>
         </div>
       </div>
 
       <style jsx>{`
-        .ezlp-desktop-people {
+        .ezlp-pc-character-layer {
           position: fixed;
-          inset: 70px 0 0 0;
+          inset: 70px 0 0;
           z-index: 2;
           pointer-events: none;
           overflow: hidden;
-          animation: pcPeopleFade 0.48s ease both;
         }
 
-        .pc-floating-person {
+        .ezlp-pc-character {
           position: absolute;
-          transform-origin: center;
+          animation: ezlpCharacterIn 0.45s ease both;
         }
 
-        .pc-person-inner {
+        .ezlp-pc-character-inner {
           position: relative;
           width: 100%;
           overflow: visible;
         }
 
-        .pc-person-inner img {
+        .ezlp-pc-character img {
           display: block;
           width: 100%;
           height: auto;
           object-fit: contain;
           filter: drop-shadow(
-            0 17px 28px rgba(0, 0, 0, 0.14)
+            0 18px 28px rgba(0, 0, 0, 0.13)
           );
         }
 
-        .pc-person-bubble {
+        .ezlp-pc-bubble {
           position: absolute;
-          top: 24px;
-          padding: 13px 18px;
+          top: 42px;
+
+          min-width: 170px;
+          max-width: 280px;
+          padding: 15px 21px;
 
           background: #fff;
           color: #111;
 
-          border: 1.7px solid #111;
+          border: 2px solid #111;
           border-radius: 999px;
 
-          font-size: 14px;
+          font-size: 15px;
           font-weight: 800;
-          line-height: 1.3;
+          line-height: 1.35;
+          text-align: center;
           white-space: nowrap;
 
-          box-shadow: 0 9px 24px rgba(0, 0, 0, 0.1);
+          box-shadow:
+            0 10px 28px rgba(0, 0, 0, 0.10);
         }
 
-        .pc-person-bubble span {
+        .ezlp-pc-bubble span {
           position: absolute;
-          top: 17px;
-          width: 13px;
-          height: 13px;
+          top: 23px;
+
+          width: 18px;
+          height: 18px;
+
           background: #fff;
           transform: rotate(45deg);
         }
 
-        .tail-right {
-          left: -7px;
-          border-left: 1.7px solid #111;
-          border-bottom: 1.7px solid #111;
+        .ezlp-tail-right {
+          left: -10px;
+
+          border-left: 2px solid #111;
+          border-bottom: 2px solid #111;
         }
 
-        .tail-left {
-          right: -7px;
-          border-top: 1.7px solid #111;
-          border-right: 1.7px solid #111;
+        .ezlp-tail-left {
+          right: -10px;
+
+          border-right: 2px solid #111;
+          border-top: 2px solid #111;
         }
 
-        .pc-rotation-indicator {
-          position: absolute;
-          left: 50%;
-          bottom: 22px;
-          transform: translateX(-50%);
-
-          display: flex;
-          align-items: center;
-          gap: 5px;
-
-          padding: 7px 12px;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.78);
-          backdrop-filter: blur(8px);
-
-          font-size: 12px;
-        }
-
-        .pc-rotation-indicator > div {
-          display: flex;
-          gap: 5px;
-          margin-left: 8px;
-        }
-
-        .pc-rotation-indicator i {
-          display: block;
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: #cfcfcf;
-        }
-
-        .pc-rotation-indicator i.active {
-          width: 7px;
-          height: 7px;
-          background: #111;
-        }
-
-        @keyframes pcPeopleFade {
+        @keyframes ezlpCharacterIn {
           from {
             opacity: 0;
-            transform: translateY(5px);
+            transform:
+              translate(-50%, calc(-50% + 10px))
+              rotate(0deg);
           }
 
           to {
             opacity: 1;
-            transform: translateY(0);
           }
         }
 
-        /* 모바일은 MobileHome만 사용.
-           이 컴포넌트는 아예 숨김. */
+        /* 모바일은 지금 완성된 MobileHome 그대로 사용 */
         @media (max-width: 768px) {
-          .ezlp-desktop-people {
+          .ezlp-pc-character-layer {
             display: none !important;
           }
         }
