@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { MUSIC_COLORS } from '@/lib/music-colors';
+import FunnyPeopleLayer from "@/components/FunnyPeople";
 
 export const dynamic = 'force-dynamic';
 
@@ -17,7 +18,8 @@ export default function HomePage() {
   ];
 
   return (
-    <main>
+    <main style={{ position: "relative" }}>
+      <FunnyPeopleLayer />
 
       {/* 첫 화면 */}
       <section
