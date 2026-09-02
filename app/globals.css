@@ -1381,3 +1381,271 @@ textarea {
     display: none;
   }
 }
+
+
+/* EZLP MOBILE V2 START */
+
+@media (max-width: 768px) {
+
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    min-width: 0 !important;
+  }
+
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  /* ---------------------------------
+     HERO
+  ---------------------------------- */
+
+  .ezlp-hero-zone {
+    display: block !important;
+    grid-template-columns: 1fr !important;
+    min-height: auto !important;
+    width: 100% !important;
+
+    padding:
+      64px
+      20px
+      72px !important;
+
+    gap: 0 !important;
+  }
+
+  .ezlp-hero-zone > div {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .ezlp-hero-zone h1 {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin:
+      14px
+      0
+      24px !important;
+
+    font-size: 47px !important;
+    line-height: .96 !important;
+    letter-spacing: -.065em !important;
+
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    white-space: normal !important;
+  }
+
+  .ezlp-hero-zone p {
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+  }
+
+  .eyebrow {
+    font-size: 10px !important;
+    letter-spacing: .18em !important;
+  }
+
+  /* ---------------------------------
+     메인 카테고리
+  ---------------------------------- */
+
+  .home-main-menu {
+    width: 100% !important;
+
+    margin-top: 54px !important;
+
+    display: grid !important;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+
+    border-left: 0 !important;
+  }
+
+  .home-main-menu-card {
+    min-width: 0 !important;
+    min-height: 135px !important;
+    width: auto !important;
+
+    padding: 18px !important;
+
+    overflow: hidden !important;
+  }
+
+  .home-main-menu-card strong {
+    font-size: 29px !important;
+    line-height: 1 !important;
+  }
+
+  .home-main-menu-card > span {
+    font-size: 9px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* ---------------------------------
+     COLOR SECTION
+  ---------------------------------- */
+
+  .home-color-section {
+    display: block !important;
+
+    width: 100% !important;
+    min-height: auto !important;
+
+    padding:
+      68px
+      20px
+      86px !important;
+  }
+
+  .home-color-copy {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 0 48px !important;
+  }
+
+  .home-color-copy h2 {
+    width: 100% !important;
+
+    font-size: 39px !important;
+    line-height: 1.02 !important;
+    letter-spacing: -.055em !important;
+
+    word-break: keep-all !important;
+  }
+
+  .home-color-copy h2 span {
+    display: inline !important;
+  }
+
+  .home-color-copy p {
+    width: 100% !important;
+
+    font-size: 12px !important;
+    line-height: 1.7 !important;
+
+    word-break: keep-all !important;
+  }
+
+  .home-color-copy h3 {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+
+    word-break: keep-all !important;
+  }
+
+  .home-color-preview {
+    width: 100% !important;
+
+    display: grid !important;
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 4px !important;
+  }
+
+  .home-color-chip {
+    min-width: 0 !important;
+    min-height: 88px !important;
+
+    padding: 12px !important;
+  }
+
+  /* ---------------------------------
+     EXPLORE
+  ---------------------------------- */
+
+  .category-section {
+    width: 100% !important;
+    min-height: auto !important;
+
+    padding:
+      70px
+      20px
+      80px !important;
+  }
+
+  .category-grid {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .category-card {
+    display: block !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 165px !important;
+
+    padding: 22px !important;
+
+    border-left: 0 !important;
+    border-right: 0 !important;
+  }
+
+  .category-card h2 {
+    font-size: 39px !important;
+  }
+
+  /* ---------------------------------
+     REQUEST
+  ---------------------------------- */
+
+  .request-banner {
+    width: 100% !important;
+
+    padding:
+      72px
+      20px
+      82px !important;
+  }
+
+  .request-banner h2 {
+    width: 100% !important;
+
+    font-size: 40px !important;
+    line-height: 1.02 !important;
+
+    word-break: keep-all !important;
+  }
+
+  .request-banner p {
+    word-break: keep-all !important;
+  }
+
+  /* ---------------------------------
+     버튼
+  ---------------------------------- */
+
+  .hero-buttons {
+    display: flex !important;
+    flex-wrap: wrap !important;
+
+    gap: 8px !important;
+  }
+
+  .dark-button,
+  .light-button,
+  .white-button {
+    min-height: 44px !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 16px !important;
+  }
+
+}
+
+/* EZLP MOBILE V2 END */

@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 type Bubble = {
   text: string;
   side: "left" | "right";
-  y?: number;
 };
 
 type Person = {
@@ -17,217 +16,199 @@ type Person = {
   bubble?: Bubble;
 };
 
-type Stage = {
-  people: Person[];
-};
-
-const stages: Stage[] = [
-  // 1. 첫 화면
-  {
-    people: [
-      {
-        src: "/people/01.png",
-        left: "45%",
-        top: "19%",
-        size: 390,
-        rotate: -3,
-        bubble: {
-          text: "세상에 나쁜 음반은 없다..",
-          side: "right",
-          y: 18,
-        },
-      },
-      {
-        src: "/people/02.png",
-        left: "93%",
-        top: "82%",
-        size: 350,
-        rotate: 3,
-        bubble: {
-          text: "없으면 찾아달라고 하면 되지.",
-          side: "left",
-          y: 24,
-        },
-      },
-    ],
-  },
-
-  // 2. 색깔로 찾아내기
-  {
-    people: [
-      {
-        src: "/people/03.png",
-        left: "39%",
-        top: "22%",
-        size: 390,
-        rotate: -3,
-        bubble: {
-          text: "이 색이었는데… 무슨 앨범이더라?",
-          side: "left",
-          y: 15,
-        },
-      },
-      {
-        src: "/people/04.png",
-        left: "35%",
-        top: "80%",
-        size: 370,
-        rotate: 3,
-        bubble: {
-          text: "색만 기억나도 찾을 수 있지.",
-          side: "right",
-          y: 30,
-        },
-      },
-    ],
-  },
-
-  // 3. 다음 섹션
-  {
-    people: [
-      {
-        src: "/people/05.png",
-        left: "14%",
-        top: "24%",
-        size: 370,
-        rotate: -3,
-        bubble: {
-          text: "이건 좀 탐난다.",
-          side: "right",
-          y: 20,
-        },
-      },
-      {
-        src: "/people/06.png",
-        left: "91%",
-        top: "77%",
-        size: 350,
-        rotate: 3,
-      },
-    ],
-  },
-
-  // 4. EXPLORE 근처
-  {
-    people: [
-      {
-        src: "/people/07.png",
-        left: "18%",
-        top: "76%",
-        size: 400,
-        rotate: -3,
-      },
-      {
-        src: "/people/08.png",
-        left: "88%",
-        top: "22%",
-        size: 370,
-        rotate: 3,
-        bubble: {
-          text: "LP도 취향대로.",
-          side: "left",
-          y: 25,
-        },
-      },
-    ],
-  },
-
-  // 5
-  {
-    people: [
-      {
-        src: "/people/09.png",
-        left: "14%",
-        top: "22%",
-        size: 370,
-        rotate: -3,
-        bubble: {
-          text: "못 찾겠으면 EZLP.",
-          side: "right",
-          y: 18,
-        },
-      },
-      {
-        src: "/people/10.png",
-        left: "90%",
-        top: "78%",
-        size: 380,
-        rotate: 3,
-      },
-    ],
-  },
-
-  // 6. 마지막
-  {
-    people: [
-      {
-        src: "/people/11.png",
-        left: "16%",
-        top: "78%",
-        size: 370,
-        rotate: -3,
-      },
-      {
-        src: "/people/12.png",
-        left: "87%",
-        top: "23%",
-        size: 380,
-        rotate: 3,
-        bubble: {
-          text: "결국 찾았네.",
-          side: "left",
-          y: 20,
-        },
-      },
-    ],
-  },
+const desktopStages: Person[][] = [
+  [
+    {
+      src: "/people/01.png",
+      left: "45%",
+      top: "19%",
+      size: 390,
+      rotate: -3,
+      bubble: { text: "세상에 나쁜 음반은 없다..", side: "right" },
+    },
+    {
+      src: "/people/02.png",
+      left: "93%",
+      top: "82%",
+      size: 350,
+      rotate: 3,
+    },
+  ],
+  [
+    {
+      src: "/people/03.png",
+      left: "39%",
+      top: "22%",
+      size: 390,
+      rotate: -3,
+      bubble: { text: "이 색이었는데… 무슨 앨범이더라?", side: "left" },
+    },
+    {
+      src: "/people/04.png",
+      left: "35%",
+      top: "80%",
+      size: 370,
+      rotate: 3,
+    },
+  ],
+  [
+    {
+      src: "/people/05.png",
+      left: "14%",
+      top: "24%",
+      size: 370,
+      rotate: -3,
+      bubble: { text: "이건 좀 탐난다.", side: "right" },
+    },
+    {
+      src: "/people/06.png",
+      left: "91%",
+      top: "77%",
+      size: 350,
+      rotate: 3,
+    },
+  ],
+  [
+    {
+      src: "/people/07.png",
+      left: "18%",
+      top: "76%",
+      size: 400,
+      rotate: -3,
+    },
+    {
+      src: "/people/08.png",
+      left: "88%",
+      top: "22%",
+      size: 370,
+      rotate: 3,
+      bubble: { text: "LP도 취향대로.", side: "left" },
+    },
+  ],
+  [
+    {
+      src: "/people/09.png",
+      left: "14%",
+      top: "22%",
+      size: 370,
+      rotate: -3,
+      bubble: { text: "못 찾겠으면 EZLP.", side: "right" },
+    },
+    {
+      src: "/people/10.png",
+      left: "90%",
+      top: "78%",
+      size: 380,
+      rotate: 3,
+    },
+  ],
+  [
+    {
+      src: "/people/11.png",
+      left: "16%",
+      top: "78%",
+      size: 370,
+      rotate: -3,
+    },
+    {
+      src: "/people/12.png",
+      left: "87%",
+      top: "23%",
+      size: 380,
+      rotate: 3,
+      bubble: { text: "결국 찾았네.", side: "left" },
+    },
+  ],
 ];
 
-function PersonBubble({ bubble }: { bubble: Bubble }) {
+/*
+  모바일은 PC랑 완전히 별도 배치.
+  한 화면에 한 명만 보여서 본문을 방해하지 않게 함.
+*/
+const mobileStages: Person[][] = [
+  [
+    {
+      src: "/people/01.png",
+      left: "76%",
+      top: "70%",
+      size: 190,
+      rotate: 3,
+      bubble: { text: "세상에 나쁜 음반은 없다..", side: "left" },
+    },
+  ],
+  [
+    {
+      src: "/people/03.png",
+      left: "77%",
+      top: "73%",
+      size: 195,
+      rotate: -3,
+      bubble: { text: "색으로도 찾아보자.", side: "left" },
+    },
+  ],
+  [
+    {
+      src: "/people/05.png",
+      left: "76%",
+      top: "72%",
+      size: 180,
+      rotate: 3,
+      bubble: { text: "이건 좀 탐난다.", side: "left" },
+    },
+  ],
+  [
+    {
+      src: "/people/07.png",
+      left: "77%",
+      top: "74%",
+      size: 190,
+      rotate: -3,
+    },
+  ],
+  [
+    {
+      src: "/people/09.png",
+      left: "76%",
+      top: "73%",
+      size: 185,
+      rotate: 3,
+      bubble: { text: "못 찾겠으면 EZLP.", side: "left" },
+    },
+  ],
+  [
+    {
+      src: "/people/12.png",
+      left: "76%",
+      top: "72%",
+      size: 185,
+      rotate: -3,
+      bubble: { text: "결국 찾았네.", side: "left" },
+    },
+  ],
+];
+
+function PersonBubble({
+  bubble,
+  mobile,
+}: {
+  bubble: Bubble;
+  mobile: boolean;
+}) {
   const right = bubble.side === "right";
 
   return (
     <div
+      className="ezlp-person-speech"
       style={{
-        position: "absolute",
-        top: bubble.y ?? 20,
         ...(right
-          ? { left: "calc(100% + 18px)" }
-          : { right: "calc(100% + 18px)" }),
-        padding: "14px 18px",
-        background: "#fff",
-        color: "#111",
-        border: "2px solid #111",
-        borderRadius: "999px",
-        fontSize: 15,
-        fontWeight: 800,
-        lineHeight: 1.3,
-        whiteSpace: "nowrap",
-        boxShadow: "0 9px 24px rgba(0,0,0,.12)",
+          ? { left: "calc(100% + 14px)" }
+          : { right: "calc(100% + 14px)" }),
+        top: mobile ? 8 : 18,
       }}
     >
       {bubble.text}
-
       <span
-        style={{
-          position: "absolute",
-          top: 18,
-          width: 14,
-          height: 14,
-          background: "#fff",
-          transform: "rotate(45deg)",
-          ...(right
-            ? {
-                left: -8,
-                borderLeft: "2px solid #111",
-                borderBottom: "2px solid #111",
-              }
-            : {
-                right: -8,
-                borderRight: "2px solid #111",
-                borderTop: "2px solid #111",
-              }),
-        }}
+        className={right ? "speech-tail-right" : "speech-tail-left"}
       />
     </div>
   );
@@ -235,9 +216,13 @@ function PersonBubble({ bubble }: { bubble: Bubble }) {
 
 export default function FunnyPeople() {
   const [stage, setStage] = useState(0);
+  const [mobile, setMobile] = useState(false);
 
   useEffect(() => {
     const update = () => {
+      const isMobile = window.innerWidth <= 768;
+      setMobile(isMobile);
+
       const maxScroll =
         document.documentElement.scrollHeight - window.innerHeight;
 
@@ -251,7 +236,7 @@ export default function FunnyPeople() {
         Math.max(0, window.scrollY / maxScroll)
       );
 
-      setStage(Math.floor(progress * stages.length));
+      setStage(Math.floor(progress * 6));
     };
 
     update();
@@ -265,75 +250,109 @@ export default function FunnyPeople() {
     };
   }, []);
 
+  const current = mobile
+    ? mobileStages[stage]
+    : desktopStages[stage];
+
   return (
-    <div
-      key={stage}
-      style={{
-        position: "fixed",
-        top: 70,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        zIndex: 2,
-        pointerEvents: "none",
-        overflow: "hidden",
-        animation: "ezlpFade .28s ease",
-      }}
-    >
-      {stages[stage].people.map((person) => (
+    <div className={`ezlp-floating-layer ${mobile ? "mobile" : "desktop"}`}>
+      {current.map((person) => (
         <div
           key={person.src}
+          className="ezlp-floating-person"
           style={{
-            position: "absolute",
             top: person.top,
             left: person.left,
             width: person.size,
             transform: `translate(-50%, -50%) rotate(${person.rotate}deg)`,
           }}
         >
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              overflow: "visible",
-            }}
-          >
-            <img
-              src={person.src}
-              alt=""
-              style={{
-                display: "block",
-                width: "100%",
-                height: "auto",
-                objectFit: "contain",
-                filter: "drop-shadow(0 16px 25px rgba(0,0,0,.15))",
-              }}
-            />
+          <div className="ezlp-person-inner">
+            <img src={person.src} alt="" />
 
-            {person.bubble && <PersonBubble bubble={person.bubble} />}
+            {person.bubble && (
+              <PersonBubble bubble={person.bubble} mobile={mobile} />
+            )}
           </div>
         </div>
       ))}
 
       <style jsx>{`
-        @keyframes ezlpFade {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+        .ezlp-floating-layer {
+          position: fixed;
+          top: 72px;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 2;
+          pointer-events: none;
+          overflow: hidden;
         }
 
-        @media (max-width: 1150px) {
-          div > div {
-            max-width: 300px;
-          }
+        .ezlp-floating-person {
+          position: absolute;
         }
 
-        @media (max-width: 800px) {
-          div > div:nth-child(2) {
-            display: none;
+        .ezlp-person-inner {
+          position: relative;
+          width: 100%;
+          overflow: visible;
+        }
+
+        .ezlp-person-inner img {
+          display: block;
+          width: 100%;
+          height: auto;
+          object-fit: contain;
+          filter: drop-shadow(0 13px 22px rgba(0,0,0,.14));
+        }
+
+        .ezlp-person-speech {
+          position: absolute;
+          padding: 11px 14px;
+          background: #fff;
+          color: #111;
+          border: 2px solid #111;
+          border-radius: 999px;
+          font-size: 13px;
+          font-weight: 800;
+          line-height: 1.3;
+          white-space: nowrap;
+          box-shadow: 0 8px 20px rgba(0,0,0,.1);
+        }
+
+        .ezlp-person-speech span {
+          position: absolute;
+          top: 17px;
+          width: 12px;
+          height: 12px;
+          background: #fff;
+          transform: rotate(45deg);
+        }
+
+        .speech-tail-right {
+          left: -7px;
+          border-left: 2px solid #111;
+          border-bottom: 2px solid #111;
+        }
+
+        .speech-tail-left {
+          right: -7px;
+          border-right: 2px solid #111;
+          border-top: 2px solid #111;
+        }
+
+        @media (max-width: 768px) {
+          .ezlp-floating-layer {
+            top: 86px;
+          }
+
+          .ezlp-person-speech {
+            max-width: 150px;
+            white-space: normal;
+            text-align: center;
+            font-size: 11px;
+            padding: 8px 11px;
           }
         }
       `}</style>
