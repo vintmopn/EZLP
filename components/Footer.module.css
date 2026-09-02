@@ -1,0 +1,185 @@
+.footer {
+  position: relative;
+  z-index: 20;
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border-top: 1px solid #222;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.25fr;
+  gap: 50px;
+  padding: 72px clamp(32px, 5vw, 96px);
+}
+
+.logo {
+  display: inline-block;
+  color: #fff;
+  text-decoration: none;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.brand p {
+  margin: 24px 0 0;
+  color: #888;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.column,
+.director {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.column a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.column a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.label {
+  margin-bottom: 8px;
+  color: #727272;
+  font-size: 9px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.director strong {
+  margin-top: 2px;
+  font-size: 24px;
+  letter-spacing: -0.04em;
+}
+
+.director small {
+  color: #777;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+}
+
+.contactBanner {
+  margin: 0 clamp(32px, 5vw, 96px);
+  padding: 35px 0;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 30px;
+
+  border-top: 1px solid #343434;
+  border-bottom: 1px solid #343434;
+}
+
+.contactBanner strong {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(25px, 2.2vw, 38px);
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+}
+
+.contactBanner p {
+  margin: 10px 0 0;
+  color: #777;
+  font-size: 12px;
+}
+
+.contactButton {
+  flex: 0 0 auto;
+  min-height: 50px;
+  padding: 0 23px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #fff;
+  color: #111;
+  border: 1px solid #fff;
+
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.contactButton:hover {
+  background: #111;
+  color: #fff;
+}
+
+.bottom {
+  padding: 27px clamp(32px, 5vw, 96px);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  color: #626262;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+@media (max-width: 768px) {
+  .top {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px 24px;
+    padding: 54px 22px;
+  }
+
+  .brand {
+    grid-column: 1 / -1;
+  }
+
+  .director {
+    grid-column: 1 / -1;
+    padding-top: 25px;
+    border-top: 1px solid #303030;
+  }
+
+  .director strong {
+    font-size: 27px;
+  }
+
+  .contactBanner {
+    margin: 0 22px;
+    padding: 36px 0;
+
+    display: block;
+  }
+
+  .contactBanner strong {
+    font-size: 28px;
+  }
+
+  .contactButton {
+    width: 100%;
+    margin-top: 27px;
+    min-height: 52px;
+  }
+
+  .bottom {
+    padding: 26px 22px 38px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    line-height: 1.7;
+  }
+}
