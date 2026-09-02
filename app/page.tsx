@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { MUSIC_COLORS } from '@/lib/music-colors';
-import FunnyPeopleLayer from "@/components/FunnyPeople";
-
+import FunnyPeople from "@/components/FunnyPeople";
 export const dynamic = 'force-dynamic';
 
 export default function HomePage() {
@@ -19,9 +18,9 @@ export default function HomePage() {
 
   return (
     <main style={{ position: "relative" }}>
-      <FunnyPeopleLayer />
-
-      {/* 첫 화면 */}
+      <div style={{ position: "relative", overflow: "hidden" }}>
+        <FunnyPeople />
+{/* 첫 화면 */}
       <section
         style={{
           minHeight: 'calc(100vh - 76px)',
@@ -255,6 +254,7 @@ export default function HomePage() {
         </Link>
       </section>
 
+          </div>
     </main>
   );
 }
